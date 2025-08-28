@@ -1,0 +1,32 @@
+<h2>Edit Farmer</h2>
+<form (ngSubmit)="updateFarmer()">
+  <label>First Name:
+    <input [(ngModel)]="farmer.first_name" name="first_name" required>
+  </label><br>
+
+  <label>Last Name:
+    <input [(ngModel)]="farmer.last_name" name="last_name" required>
+  </label><br>
+
+  <label>Email:
+    <input [(ngModel)]="farmer.email" name="email" type="email" required>
+  </label><br>
+
+  <label>Address:
+    <input [(ngModel)]="farmer.address" name="address" required>
+  </label><br>
+
+  <label>District:
+    <input [(ngModel)]="farmer.district" name="district" required>
+  </label><br>
+
+  <label>Pincode:
+    <input [(ngModel)]="farmer.pincode" name="pincode" required>
+  </label><br>
+
+  <label>Phone No:
+    <input [(ngModel)]="farmer.phone_no" name="phone_no" required>
+  </label><br>
+
+  <button type="submit">Update Farmer</button>
+</form>

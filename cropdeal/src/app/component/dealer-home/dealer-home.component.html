@@ -1,0 +1,144 @@
+<ng-container *ngIf="dealer(); else loading">
+  <div class="container py-4">
+    <!-- Welcome Header -->
+    <div class="text-center mb-5">
+      <h1 class="display-4 text-primary fw-bold">
+        Welcome, {{ dealer().first_name }} {{ dealer().last_name }}!
+      </h1>
+      <p class="lead text-muted">Manage your business operations from one place</p>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row g-4 mb-5">
+      <!-- Profile Management Card -->
+      <div class="col-lg-4">
+        <div class="card h-100 shadow-lg border-0 rounded-4 dashboard-card" 
+             (click)="activeSection = 'profile'" 
+             [class.active]="activeSection === 'profile'">
+          <div class="card-body text-center p-5">
+            <div class="icon-wrapper mb-4">
+              <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+            </div>
+            <h3 class="card-title text-primary fw-bold">Profile Management</h3>
+            <p class="card-text text-muted">
+              View and update your personal information, contact details, and account settings
+            </p>
+            <div class="mt-4">
+              <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                <i class="bi bi-pencil-square me-1"></i>
+                Click to Manage
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank Details Card -->
+      <div class="col-lg-4">
+        <div class="card h-100 shadow-lg border-0 rounded-4 dashboard-card" 
+             (click)="activeSection = 'bank'" 
+             [class.active]="activeSection === 'bank'">
+          <div class="card-body text-center p-5">
+            <div class="icon-wrapper mb-4">
+              <i class="bi bi-bank text-warning" style="font-size: 4rem;"></i>
+            </div>
+            <h3 class="card-title text-warning fw-bold">Bank Details</h3>
+            <p class="card-text text-muted">
+              Manage your banking information for secure payments and transactions
+            </p>
+            <div class="mt-4">
+              <span class="badge bg-warning-subtle text-warning px-3 py-2">
+                <i class="bi bi-credit-card me-1"></i>
+                {{ dealer().bankDetails ? 'Update Details' : 'Add Details' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Crop Bookings Card -->
+      <div class="col-lg-4">
+        <div class="card h-100 shadow-lg border-0 rounded-4 dashboard-card" 
+             (click)="activeSection = 'bookings'" 
+             [class.active]="activeSection === 'bookings'">
+          <div class="card-body text-center p-5">
+            <div class="icon-wrapper mb-4">
+              <i class="bi bi-cart-check text-success" style="font-size: 4rem;"></i>
+            </div>
+            <h3 class="card-title text-success fw-bold">My Crop Bookings</h3>
+            <p class="card-text text-muted">
+              View and manage your crop bookings, payments, and order history
+            </p>
+            <div class="mt-4">
+              <span class="badge bg-success-subtle text-success px-3 py-2">
+                <i class="bi bi-list-check me-1"></i>
+                {{ bookings.length }} Bookings
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Section Content -->
+    <div *ngIf="activeSection" class="fade-in">
+      <!-- Profile Section -->
+      <app-profile-card 
+        *ngIf="activeSection === 'profile'"
+        [dealer]="dealer()"
+        [editMode]="editMode"
+        [editData]="editDealer"
+        [saving]="saving"
+        [deleting]="deleting"
+        (updateProfile)="updateProfile()"
+        (deleteDealer)="confirmDeleteDealer()"
+        (editModeChange)="editMode.set($event)">
+      </app-profile-card>
+
+      <!-- Bank Section -->
+      <app-bank-card 
+        *ngIf="activeSection === 'bank'"
+        [dealer]="dealer()"
+        [bankEditData]="bankEditData"
+        [saving]="saving"
+        (saveBankDetails)="saveBankDetails()"
+        (prefillBankDetails)="prefillBankDetails()">
+      </app-bank-card>
+
+      <!-- Bookings Section -->
+      <app-my-crop-bookings 
+        *ngIf="activeSection === 'bookings'"
+        [bookings]="bookings"
+        (payNow)="payNow($event)">
+      </app-my-crop-bookings>
+    </div>
+
+    <!-- Quick Actions (when no section is active) -->
+    <div *ngIf="!activeSection" class="text-center py-5">
+      <h4 class="text-muted mb-4">Select a section above to get started</h4>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <button class="btn btn-outline-primary" (click)="activeSection = 'profile'">
+          <i class="bi bi-person-circle me-2"></i>Manage Profile
+        </button>
+        <button class="btn btn-outline-warning" (click)="activeSection = 'bank'">
+          <i class="bi bi-bank me-2"></i>Bank Details
+        </button>
+        <button class="btn btn-outline-success" (click)="activeSection = 'bookings'">
+          <i class="bi bi-cart-check me-2"></i>My Bookings
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<ng-template #loading>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading dealer data...</p>
+  </div>
+</ng-template>
+
+

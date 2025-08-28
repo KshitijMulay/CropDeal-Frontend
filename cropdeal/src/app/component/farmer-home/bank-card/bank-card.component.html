@@ -1,0 +1,73 @@
+<div class="card shadow-lg border-0 rounded-4 bg-light">
+  <div class="card-header bg-warning text-white text-center py-3">
+    <h3 class="mb-0"><i class="bi bi-bank me-2"></i>Bank Details</h3>
+  </div>
+  <div class="card-body p-4">
+    <!-- Display Mode -->
+    <div *ngIf="!editMode">
+      <div *ngIf="farmer.bankDetails; else noBankDetails">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p><strong>Bank Name:</strong> {{ farmer.bankDetails.bankName }}</p>
+            <p><strong>Account Number:</strong> ****{{ farmer.bankDetails.accountNumber?.slice(-4) }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>IFSC Code:</strong> {{ farmer.bankDetails.ifscCode }}</p>
+            <p><strong>UPI ID:</strong> {{ farmer.bankDetails.upiId }}</p>
+          </div>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-warning" (click)="onEditMode()" [disabled]="saving">
+            <i class="bi bi-pencil-square"></i> Update Details
+          </button>
+        </div>
+      </div>
+      
+      <ng-template #noBankDetails>
+        <div class="text-center py-5">
+          <i class="bi bi-bank text-muted" style="font-size: 4rem;"></i>
+          <h5 class="text-muted mt-3">No Bank Details Added</h5>
+          <p class="text-muted">Add your bank details to receive payments securely</p>
+          <button class="btn btn-warning" (click)="onEditMode()" [disabled]="saving">
+            <i class="bi bi-plus-circle"></i> Add Bank Details
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Edit Mode -->
+    <div *ngIf="editMode" class="border-top pt-4">
+      <h5 class="text-warning mb-3">{{ farmer.bankDetails ? 'Update' : 'Add' }} Bank Details</h5>
+      <form (ngSubmit)="onSave()" #bankForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="bankName" class="form-label">Bank Name *</label>
+            <input id="bankName" [(ngModel)]="bankEditData.bankName" name="bankName" class="form-control" #bankName="ngModel" required [class.is-invalid]="bankName.invalid && bankName.touched" />
+            <div class="invalid-feedback" *ngIf="bankName.invalid && bankName.touched">Bank name is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="accountNumber" class="form-label">Account Number *</label>
+            <input id="accountNumber" [(ngModel)]="bankEditData.accountNumber" name="accountNumber" class="form-control" #accountNumber="ngModel" required minlength="9" maxlength="18" pattern="[0-9]+" [class.is-invalid]="accountNumber.invalid && accountNumber.touched" />
+            <div class="invalid-feedback" *ngIf="accountNumber.invalid && accountNumber.touched">Account number must be 9-18 digits</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="ifscCode" class="form-label">IFSC Code *</label>
+            <input id="ifscCode" [(ngModel)]="bankEditData.ifscCode" name="ifscCode" class="form-control" #ifscCode="ngModel" required minlength="11" maxlength="11" pattern="[A-Za-z]{4}[0-9]{7}" style="text-transform: uppercase" [class.is-invalid]="ifscCode.invalid && ifscCode.touched" />
+            <div class="invalid-feedback" *ngIf="ifscCode.invalid && ifscCode.touched">IFSC code must be 11 characters (e.g., SBIN0001234)</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="upiId" class="form-label">UPI ID</label>
+            <input id="upiId" [(ngModel)]="bankEditData.upiId" name="upiId" class="form-control" placeholder="example@upi" />
+          </div>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-success me-2" type="submit" [disabled]="bankForm.invalid || saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle"></i> {{ saving ? 'Saving...' : 'Save Details' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="onCancel()" [disabled]="saving">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

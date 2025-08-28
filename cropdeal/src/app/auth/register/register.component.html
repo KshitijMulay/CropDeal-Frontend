@@ -1,0 +1,109 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-lg p-4 border-0" style="width: 100%; max-width: 500px; border-radius: 1.5rem; background: rgba(255, 255, 255, 0.95);">
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <h2 class="text-success fw-bold mb-1">Create Account</h2>
+        <p class="text-muted mb-0">Join CropDeal community today</p>
+      </div>
+      
+      <form #registerForm="ngForm" (ngSubmit)="register()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            required
+            email
+            placeholder="Enter your email"
+            [(ngModel)]="user.email"
+            #email="ngModel"
+            [class.is-invalid]="email.invalid && email.touched"
+          />
+          <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+            <div *ngIf="email.errors?.['required']">Email is required</div>
+            <div *ngIf="email.errors?.['email']">Please enter a valid email address</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="role" class="form-label">Role *</label>
+          <select
+            id="role"
+            name="role"
+            class="form-select form-select-lg rounded-pill shadow-sm"
+            [(ngModel)]="user.role"
+            required
+            #role="ngModel"
+            [class.is-invalid]="role.invalid && role.touched"
+          >
+            <option value="FARMER">Farmer</option>
+            <option value="DEALER">Dealer</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="role.invalid && role.touched">
+            Please select a role
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="password" class="form-label">Password *</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            required
+            minlength="8"
+            placeholder="Enter your password (min 8 characters)"
+            [(ngModel)]="user.password"
+            #password="ngModel"
+            [class.is-invalid]="password.invalid && password.touched"
+          />
+          <div class="invalid-feedback" *ngIf="password.invalid && password.touched">
+            <div *ngIf="password.errors?.['required']">Password is required</div>
+            <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</div>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label for="confirmPassword" class="form-label">Confirm Password *</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            required
+            placeholder="Confirm your password"
+            [(ngModel)]="user.confirmPassword"
+            #confirmPassword="ngModel"
+            [class.is-invalid]="(confirmPassword.invalid && confirmPassword.touched) || (user.password !== user.confirmPassword && confirmPassword.touched)"
+          />
+          <div class="invalid-feedback" *ngIf="confirmPassword.invalid && confirmPassword.touched">
+            <div *ngIf="confirmPassword.errors?.['required']">Please confirm your password</div>
+          </div>
+          <div class="invalid-feedback" *ngIf="user.password !== user.confirmPassword && confirmPassword.touched && !confirmPassword.errors?.['required']">
+            Passwords do not match
+          </div>
+        </div>
+        
+        <div class="d-grid mb-3">
+          <button
+            type="submit"
+            class="btn btn-success btn-lg rounded-pill shadow-sm fw-semibold"
+            [disabled]="registerForm.invalid || user.password !== user.confirmPassword || loading"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!loading" class="bi bi-person-plus me-2"></i>
+            {{ loading ? 'Creating Account...' : 'Create Account' }}
+          </button>
+        </div>
+        
+        <div class="text-center mt-3">
+          <span class="text-muted">Already have an account?</span>
+          <a routerLink="/login" class="text-success fw-semibold text-decoration-none ms-1">Login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+/* Overlay for hero */
+.hero-section .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Utility animation classes */
+.animate-fade-in {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+.animate-fade-in.delay-1 {
+  animation-delay: 0.5s;
+}
+
+.animate-fade-in.delay-2 {
+  animation-delay: 1s;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease forwards;
+  opacity: 0;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+/* Button hover improvements */
+.btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+  color: #212529;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Card shadow and hover effect on crop cards */
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card shadow and hover effect on farmer/dealer cards */
+.card, .bg-success.bg-opacity-10, .bg-warning.bg-opacity-10 {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.card:hover, .bg-success.bg-opacity-10:hover, .bg-warning.bg-opacity-10:hover {
+  box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(33,150,83,0.10);
+  transform: translateY(-8px) scale(1.03);
+  z-index: 2;
+}
+
+/* Hero text shadows for readability */
+.hero-content h1,
+.hero-content p {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+/* Responsive tweak for smaller screens */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 60vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+}
+
+

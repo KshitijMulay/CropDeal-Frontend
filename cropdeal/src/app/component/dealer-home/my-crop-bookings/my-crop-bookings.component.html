@@ -1,0 +1,71 @@
+<div class="card shadow-lg border-0 rounded-4 bg-light">
+  <div class="card-header bg-success text-white text-center py-3">
+    <h3 class="mb-0"><i class="bi bi-cart-check me-2"></i>My Crop Bookings</h3>
+  </div>
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="text-dark mb-0">Your Orders ({{ bookings.length }})</h4>
+    </div>
+
+    <div *ngIf="bookings.length > 0; else noBookings" class="row g-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let booking of bookings">
+        <div class="card h-100 shadow-sm border border-success border-opacity-25">
+          <div class="card-body">
+            <h5 class="card-title text-success mb-3">
+              <i class="bi bi-box-seam me-2"></i>Crop ID: {{ booking.cropId }}
+            </h5>
+            <ul class="list-unstyled mb-3">
+              <li class="mb-2">
+                <i class="bi bi-diagram-3-fill me-2 text-muted"></i>
+                <strong>Quantity:</strong> {{ booking.quantity }} kg
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-cash-coin me-2 text-muted"></i>
+                <strong>Price Per Kg:</strong> ₹{{ (booking.price/booking.quantity).toFixed(2) }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-currency-rupee me-2 text-muted"></i>
+                <strong>Total Price:</strong> ₹{{ booking.price }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-clock-history me-2 text-muted"></i>
+                <strong>Booked At:</strong> {{ booking.time | date:'medium' }}
+              </li>
+            </ul>
+
+            <div class="mb-3">
+              <span class="badge rounded-pill px-3 py-2 fs-6"
+                [ngClass]="booking.paid ? 'bg-success' : 'bg-warning text-dark'">
+                <i class="bi" [ngClass]="booking.paid ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+                {{ booking.paid ? 'Paid' : 'Pending Payment' }}
+              </span>
+            </div>
+
+            <button *ngIf="!booking.paid" 
+                    class="btn btn-success btn-sm w-100" 
+                    (click)="onPayNow(booking)">
+              <i class="bi bi-wallet2 me-1"></i> Pay Now
+            </button>
+            
+            <button *ngIf="booking.paid" 
+                    class="btn btn-outline-success btn-sm w-100" 
+                    disabled>
+              <i class="bi bi-check-circle me-1"></i> Payment Complete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noBookings>
+      <div class="text-center py-5">
+        <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
+        <h5 class="text-muted mt-3">No Bookings Found</h5>
+        <p class="text-muted">You haven't made any crop bookings yet</p>
+        <a href="/crops" class="btn btn-success">
+          <i class="bi bi-search me-2"></i>Browse Crops
+        </a>
+      </div>
+    </ng-template>
+  </div>
+</div>

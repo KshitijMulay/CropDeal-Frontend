@@ -1,0 +1,39 @@
+<!-- Onboarding Tooltip -->
+<div *ngIf="isVisible" class="onboarding-container">
+  <!-- Highlight Box removed -->
+  
+  <!-- Tooltip -->
+  <div class="onboarding-tooltip card shadow-lg" [ngStyle]="getTooltipPosition()">
+    <!-- Arrow -->
+    <div class="tooltip-arrow" [ngClass]="getArrowClass()"></div>
+    
+    <!-- Content -->
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="badge bg-success px-3 py-2">{{ currentStep + 1 }}/{{ steps.length }}</span>
+        <button class="btn-close" (click)="skipOnboarding()" aria-label="Close"></button>
+      </div>
+      
+      <div class="text-center mb-4">
+        <div class="step-icon bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+          <i class="bi {{ steps[currentStep].icon }} text-white"></i>
+        </div>
+        <h5 class="text-success fw-bold mb-2">{{ steps[currentStep].title }}</h5>
+        <p class="text-muted mb-0">{{ steps[currentStep].content }}</p>
+      </div>
+      
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-secondary btn-sm" (click)="skipOnboarding()">Skip Tour</button>
+        <div class="d-flex gap-2">
+          <button *ngIf="currentStep > 0" class="btn btn-outline-success btn-sm" (click)="prevStep()">
+            <i class="bi bi-arrow-left me-1"></i>Back
+          </button>
+          <button class="btn btn-success btn-sm" (click)="nextStep()">
+            <span *ngIf="currentStep < steps.length - 1">Next<i class="bi bi-arrow-right ms-1"></i></span>
+            <span *ngIf="currentStep === steps.length - 1">Done<i class="bi bi-check ms-1"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

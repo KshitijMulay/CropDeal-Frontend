@@ -1,0 +1,15 @@
+body, .container {
+  background-color: #f8fff4; /* light greenish */
+}
+
+h2 {
+  color: #2e7d32;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.card {
+  border-radius: 0.45rem;
+}

@@ -1,0 +1,77 @@
+<div class="card shadow-lg border-0 rounded-4 bg-light">
+  <div class="card-header bg-primary text-white text-center py-3">
+    <h3 class="mb-0"><i class="bi bi-person-circle me-2"></i>Profile Management</h3>
+  </div>
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="text-dark mb-0">Personal Information</h4>
+      <button class="btn btn-danger btn-sm" (click)="onDeleteDealer()" [disabled]="deleting">
+        <span *ngIf="deleting" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi bi-trash"></i> {{ deleting ? 'Deleting...' : 'Delete Account' }}
+      </button>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <p><strong>Email:</strong> {{ dealer.email }}</p>
+        <p><strong>Phone:</strong> {{ dealer.phone_no }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Address:</strong> {{ dealer.address }}, {{ dealer.district }} - {{ dealer.pincode }}</p>
+        <p><strong>Status:</strong> <span class="badge bg-success">{{ dealer.status || 'Active' }}</span></p>
+      </div>
+    </div>
+
+    <div class="text-end mb-3">
+      <button class="btn btn-primary" (click)="onEditMode(true)" [disabled]="saving" *ngIf="!editMode()">
+        <i class="bi bi-pencil-square"></i> Edit Profile
+      </button>
+    </div>
+
+    <!-- Edit Form -->
+    <div *ngIf="editMode()" class="border-top pt-4">
+      <h5 class="text-primary mb-3">Edit Profile</h5>
+      <form (ngSubmit)="onUpdateProfile()" #profileForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name *</label>
+            <input id="firstName" [(ngModel)]="editData.first_name" name="first_name" class="form-control" #firstName="ngModel" required [class.is-invalid]="firstName.invalid && firstName.touched" />
+            <div class="invalid-feedback" *ngIf="firstName.invalid && firstName.touched">First name is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name *</label>
+            <input id="lastName" [(ngModel)]="editData.last_name" name="last_name" class="form-control" #lastName="ngModel" required [class.is-invalid]="lastName.invalid && lastName.touched" />
+            <div class="invalid-feedback" *ngIf="lastName.invalid && lastName.touched">Last name is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="phone" class="form-label">Phone *</label>
+            <input id="phone" [(ngModel)]="editData.phone_no" name="phone_no" class="form-control" #phone="ngModel" required pattern="[0-9]{10}" [class.is-invalid]="phone.invalid && phone.touched" />
+            <div class="invalid-feedback" *ngIf="phone.invalid && phone.touched">Valid 10-digit phone number is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="address" class="form-label">Address *</label>
+            <input id="address" [(ngModel)]="editData.address" name="address" class="form-control" #address="ngModel" required [class.is-invalid]="address.invalid && address.touched" />
+            <div class="invalid-feedback" *ngIf="address.invalid && address.touched">Address is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="district" class="form-label">District *</label>
+            <input id="district" [(ngModel)]="editData.district" name="district" class="form-control" #district="ngModel" required [class.is-invalid]="district.invalid && district.touched" />
+            <div class="invalid-feedback" *ngIf="district.invalid && district.touched">District is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="pincode" class="form-label">Pincode *</label>
+            <input id="pincode" [(ngModel)]="editData.pincode" name="pincode" class="form-control" #pincode="ngModel" required pattern="[0-9]{6}" [class.is-invalid]="pincode.invalid && pincode.touched" />
+            <div class="invalid-feedback" *ngIf="pincode.invalid && pincode.touched">Valid 6-digit pincode is required</div>
+          </div>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-success me-2" type="submit" [disabled]="profileForm.invalid || saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle"></i> {{ saving ? 'Saving...' : 'Save Changes' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="onEditMode(false)" [disabled]="saving">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

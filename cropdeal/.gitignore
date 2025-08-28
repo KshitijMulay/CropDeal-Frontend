@@ -1,0 +1,20 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Ignore node_modules and build output
+node_modules/
+.angular/
+.cache/
+npm-debug.log*
+.env
+*.log
+.DS_Store
+*.tgz
+coverage/
+dist/
+build/
+
+# Ignore editor and OS files
+.vscode/
+.idea/
+.swp
+Thumbs.db

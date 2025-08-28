@@ -1,0 +1,59 @@
+form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f6f0e1; /* light coffee cream */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(60, 45, 30, 0.1); /* subtle coffee shadow */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #4b3621; /* rich coffee brown */
+}
+
+h2 {
+  text-align: center;
+  color: #3e2c1c; /* espresso */
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #5c4430; /* mocha brown */
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #c0a98e; /* latte border */
+  border-radius: 5px;
+  background-color: #fffaf3; /* cream background */
+  color: #3a2d21;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #8b6f47; /* warm coffee highlight */
+  box-shadow: 0 0 5px rgba(139, 111, 71, 0.5);
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #8b5e3c; /* strong coffee */
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #6b4228; /* darker roast hover */
+}

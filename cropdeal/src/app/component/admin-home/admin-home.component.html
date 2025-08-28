@@ -1,0 +1,193 @@
+<div class="container my-4 animate-fade-in">
+  <h2 class="text-center mb-4 text-success fw-bold">🌾 Admin Dashboard - CropDeal</h2>
+
+  <!-- Toggle Switches -->
+  <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showFarmers" id="farmersSwitch">
+      <label class="form-check-label fw-semibold" for="farmersSwitch">Show Farmers</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showDealers" id="dealersSwitch">
+      <label class="form-check-label fw-semibold" for="dealersSwitch">Show Dealers</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showCrops" id="cropsSwitch">
+      <label class="form-check-label fw-semibold" for="cropsSwitch">Show Crops</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showReviews" id="reviewsSwitch">
+      <label class="form-check-label fw-semibold" for="reviewsSwitch">Show Reviews</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showNotifications" id="notificationsSwitch">
+      <label class="form-check-label fw-semibold" for="notificationsSwitch">Show Notifications</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="showAll" (change)="toggleAll()" id="showAllSwitch">
+      <label class="form-check-label fw-semibold text-primary" for="showAllSwitch">Show All</label>
+    </div>
+  </div>
+
+  <!-- Farmers Table -->
+  <div *ngIf="showFarmers" class="mb-5">
+    <div *ngIf="farmers().length > 0; else noFarmers">
+      <div class="card border-success shadow-sm">
+        <div class="card-header bg-success text-white text-center"><h3>Farmers</h3> </div>
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-striped align-middle text-center">
+            <thead class="table-success text-center">
+              <tr>
+                <th>ID</th><th>Name</th><th>Email</th><th>Address</th><th>District</th>
+                <th>Pincode</th><th>Status</th><th>Phone No</th><th>Bank Name</th><th>Account No</th><th>UPI ID</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let f of farmers()">
+                <td>{{ f.farmer_id }}</td>
+                <td>{{ f.first_name }} {{ f.last_name }}</td>
+                <td>{{ f.email }}</td>
+                <td>{{ f.address }}</td>
+                <td>{{ f.district }}</td>
+                <td>{{ f.pincode }}</td>
+                <td><span class="badge bg-success">{{ f.status }}</span></td>
+                <td>{{ f.phone_no }}</td>
+                <td>{{ f.bankDetails.bankName }}</td>
+                <td>{{ f.bankDetails.accountNumber }}</td>
+                <td>{{ f.bankDetails.upiId }}</td>
+                <td><button class="btn btn-sm btn-danger" (click)="deleteFarmer(f.farmer_id)">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noFarmers><p class="text-muted text-center">No Farmers data available or still loading...</p></ng-template>
+  </div>
+
+  <!-- Dealers Table -->
+  <div *ngIf="showDealers" class="mb-5">
+    <div *ngIf="dealers().length > 0; else noDealers">
+      <div class="card border-warning shadow-sm">
+        <div class="card-header bg-warning text-dark text-center"><h3>Dealers</h3></div>
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-striped align-middle text-center">
+            <thead class="table-warning text-center">
+              <tr>
+                <th>ID</th><th>Name</th><th>Email</th><th>Address</th><th>District</th>
+                <th>Pincode</th><th>Phone No</th><th>Bank Name</th><th>Account No</th><th>UPI ID</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of dealers()">
+                <td>{{ d.dealer_id }}</td>
+                <td>{{ d.first_name }} {{ d.last_name }}</td>
+                <td>{{ d.email }}</td>
+                <td>{{ d.address }}</td>
+                <td>{{ d.district }}</td>
+                <td>{{ d.pincode }}</td>
+                <td>{{ d.phone_no }}</td>
+                <td>{{ d.bankDetails.bankName }}</td>
+                <td>{{ d.bankDetails.accountNumber }}</td>
+                <td>{{ d.bankDetails.upiId }}</td>
+                <td><button class="btn btn-sm btn-danger" (click)="deleteDealer(d.dealer_id)">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noDealers><p class="text-muted text-center">No Dealers data available or still loading...</p></ng-template>
+  </div>
+
+  <!-- Crops Table -->
+  <div *ngIf="showCrops" class="mb-5">
+    <div *ngIf="crops().length > 0; else noCrops">
+      <div class="card border-danger shadow-sm">
+        <div class="card-header bg-danger text-white text-center"><h3>Crops</h3></div>
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-striped align-middle text-center">
+            <thead class="table-success text-center">
+              <tr>
+                <th>Crop ID</th><th>Farmer ID</th><th>Crop Name</th><th>Type</th><th>Qty Available</th>
+                <th>Qty Booked</th><th>Price/Kg</th><th>Total Available Cost</th><th>Total Booked Cost</th><th>Status</th><th>Posted At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of crops()">
+                <td>{{ c.cropId }}</td>
+                <td>{{ c.farmerId }}</td>
+                <td>{{ c.cropName }}</td>
+                <td>{{ c.cropType }}</td>
+                <td>{{ c.quantityAvailable }}</td>
+                <td>{{ c.quantityBooked }}</td>
+                <td>₹{{ c.pricePerKg }}</td>
+                <td>₹{{ c.totalAvailableCost }}</td>
+                <td>₹{{ c.totalBookedCost }}</td>
+                <td><span class="badge bg-success">{{ c.status }}</span></td>
+                <td>{{ c.postedAt | date: 'medium' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noCrops><p class="text-muted text-center">No Crops data available or still loading...</p></ng-template>
+  </div>
+
+  <!-- Reviews Table -->
+  <div *ngIf="showReviews" class="mb-5">
+    <div *ngIf="reviews().length > 0; else noReviews">
+      <div class="card border-info shadow-sm">
+        <div class="card-header bg-info text-white text-center"><h3>Reviews</h3></div>
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-info text-center">
+              <tr>
+                <th>ID</th><th>Crop Id</th><th>Dealer Id</th><th>Comment</th><th>Rating</th><th>Review Posted At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of reviews(); let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ r.cropId }}</td>
+                <td class="text-center">{{ r.dealerId }}</td>
+                <td>{{ r.comment }}</td>
+                <td class="text-center">{{ r.rating }}</td>
+                <td class="text-center">{{ r.reviewAt | date: 'medium' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noReviews><p class="text-muted text-center">No Reviews data available or still loading...</p></ng-template>
+  </div>
+
+  <!-- Notifications Table -->
+  <div *ngIf="showNotifications" class="mb-5">
+    <div *ngIf="notifications().length > 0; else noNotifications">
+      <div class="card border-dark shadow-sm">
+        <div class="card-header bg-dark text-white text-center"><h3>Notifications</h3></div>
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>ID</th><th>Message</th><th>Date & Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let n of notifications()">
+                <td class="text-center">{{ n.id }}</td>
+                <!-- <td>{{ n.notification }}</td> -->
+                <td [innerHTML]="n.notification" ></td>
+                <td class="text-center">{{ n.time | date: 'medium' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ng-template #noNotifications><p class="text-muted text-center">No Notifications available or still loading...</p></ng-template>
+  </div>
+</div>

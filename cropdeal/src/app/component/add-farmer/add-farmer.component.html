@@ -1,0 +1,84 @@
+<div class="container my-5 py-4 d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-lg p-4 w-100" style="max-width: 700px; border-radius: 1.5rem; background: rgba(255,255,255,0.97);">
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <!-- <img src="assets/WhatsApp.jpg" alt="CropDeal Logo" width="56" height="56" class="mb-2 rounded-circle shadow-sm border border-success border-2"> -->
+        <h2 class="mb-2 text-success text-center fw-bold">Add New Farmer</h2>
+        <p class="text-muted mb-0">Register a new farmer to the CropDeal platform</p>
+      </div>
+      <form (ngSubmit)="addFarmer()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" id="first_name" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.first_name" name="first_name" required placeholder="Enter first name" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" id="last_name" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.last_name" name="last_name" required placeholder="Enter last name" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.email" name="email" required placeholder="Enter email" />
+        </div>
+        <div class="mb-4">
+          <label for="phone_no" class="form-label">Phone Number</label>
+          <input type="text" id="phone_no" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.phone_no" name="phone_no" required placeholder="Enter phone number" />
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input type="text" id="address" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.address" name="address" required placeholder="Enter address" />
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="district" class="form-label">District</label>
+            <input type="text" id="district" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.district" name="district" required placeholder="Enter district" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            <input type="text" id="pincode" class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="farmer.pincode" name="pincode" required placeholder="Enter pincode" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            [(ngModel)]="farmer.password"
+            #passwordField="ngModel"
+            required
+            minlength="8"
+            placeholder="Create password (min 8 characters)"
+          />
+          <div *ngIf="passwordField.invalid && passwordField.touched" class="text-danger mt-1">
+            <small *ngIf="passwordField.errors?.['required']">Password is required</small>
+            <small *ngIf="passwordField.errors?.['minlength']">Password must be at least 8 characters long</small>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            [(ngModel)]="farmer.confirmPassword"
+            #confirmPasswordField="ngModel"
+            required
+            placeholder="Confirm your password"
+          />
+          <div *ngIf="confirmPasswordField.touched && farmer.password !== farmer.confirmPassword" class="text-danger mt-1">
+            <small>Passwords do not match</small>
+          </div>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm fw-semibold">
+            <i class="bi bi-person-plus me-2"></i>Add Farmer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

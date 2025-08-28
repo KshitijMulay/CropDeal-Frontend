@@ -1,0 +1,144 @@
+<div class="card shadow-lg border-0 rounded-4 bg-light">
+  <div class="card-header bg-success text-white text-center py-3">
+    <h3 class="mb-0"><i class="bi bi-flower2 me-2"></i>Crop Management</h3>
+  </div>
+  <div class="card-body p-4">
+    <!-- Header with Add Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="text-dark mb-0">My Crops ({{ crops.length }})</h4>
+      <button class="btn btn-success" (click)="toggleAddForm()" [disabled]="saving">
+        <i class="bi bi-plus-circle"></i> Add New Crop
+      </button>
+    </div>
+
+    <!-- Add Crop Form -->
+    <div *ngIf="showAddForm" class="border rounded-3 p-4 mb-4 bg-white">
+      <h5 class="text-success mb-3">Add New Crop</h5>
+      <form (ngSubmit)="onAddCrop()" #cropForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="cropName" class="form-label">Crop Name *</label>
+            <input id="cropName" [(ngModel)]="newCropData.cropName" name="cropName" class="form-control" #cropName="ngModel" required [class.is-invalid]="cropName.invalid && cropName.touched" />
+            <div class="invalid-feedback" *ngIf="cropName.invalid && cropName.touched">Crop name is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="cropType" class="form-label">Crop Type *</label>
+            <select id="cropType" [(ngModel)]="newCropData.cropType" name="cropType" class="form-select" #cropType="ngModel" required [class.is-invalid]="cropType.invalid && cropType.touched">
+              <option value="">Select Type</option>
+              <option value="Grain">Grain</option>
+              <option value="Vegetable">Vegetable</option>
+              <option value="Fruit">Fruit</option>
+              <option value="Spice">Spice</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="cropType.invalid && cropType.touched">Crop type is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="quantity" class="form-label">Quantity Available (kg) *</label>
+            <input id="quantity" [(ngModel)]="newCropData.quantityAvailable" name="quantityAvailable" type="number" min="1" class="form-control" #quantity="ngModel" required [class.is-invalid]="quantity.invalid && quantity.touched" />
+            <div class="invalid-feedback" *ngIf="quantity.invalid && quantity.touched">Valid quantity is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="price" class="form-label">Price per Kg (₹) *</label>
+            <input id="price" [(ngModel)]="newCropData.pricePerKg" name="pricePerKg" type="number" min="1" step="0.01" class="form-control" #price="ngModel" required [class.is-invalid]="price.invalid && price.touched" />
+            <div class="invalid-feedback" *ngIf="price.invalid && price.touched">Valid price is required</div>
+          </div>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-success me-2" type="submit" [disabled]="cropForm.invalid || saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle"></i> {{ saving ? 'Adding...' : 'Add Crop' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="toggleAddForm()" [disabled]="saving">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Crops List -->
+    <div *ngIf="crops.length > 0; else noCrops">
+      <div class="row">
+        <div class="col-lg-6 mb-4" *ngFor="let crop of crops">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <h5 class="card-title text-success mb-0">{{ crop.cropName }}</h5>
+                <span class="badge" [class]="crop.status === 'Available' ? 'bg-success' : 'bg-warning'">{{ crop.status }}</span>
+              </div>
+              <div class="row text-sm">
+                <div class="col-6">
+                  <p class="mb-2"><strong>Type:</strong> {{ crop.cropType }}</p>
+                  <p class="mb-2"><strong>Available:</strong> {{ crop.quantityAvailable }} kg</p>
+                </div>
+                <div class="col-6">
+                  <p class="mb-2"><strong>Price:</strong> ₹{{ crop.pricePerKg }}/kg</p>
+                  <p class="mb-2"><strong>Booked:</strong> {{ crop.quantityBooked || 0 }} kg</p>
+                </div>
+              </div>
+              <div class="text-end mt-3">
+                <button class="btn btn-outline-primary btn-sm me-2" (click)="onEditCrop(crop)" [disabled]="saving">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="onDeleteCrop(crop.cropId!)" [disabled]="saving">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noCrops>
+      <div class="text-center py-5" *ngIf="!showAddForm">
+        <i class="bi bi-flower2 text-muted" style="font-size: 4rem;"></i>
+        <h5 class="text-muted mt-3">No Crops Listed</h5>
+        <p class="text-muted">Start by adding your first crop to the marketplace</p>
+        <button class="btn btn-success" (click)="toggleAddForm()">
+          <i class="bi bi-plus-circle"></i> Add Your First Crop
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Edit Crop Modal -->
+    <div *ngIf="selectedCrop" class="border rounded-3 p-4 mt-4 bg-white">
+      <h5 class="text-primary mb-3">Edit Crop: {{ selectedCrop.cropName }}</h5>
+      <form (ngSubmit)="onSaveEditedCrop()" #editCropForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="editCropName" class="form-label">Crop Name *</label>
+            <input id="editCropName" [(ngModel)]="selectedCrop.cropName" name="cropName" class="form-control" #editCropName="ngModel" required [class.is-invalid]="editCropName.invalid && editCropName.touched" />
+            <div class="invalid-feedback" *ngIf="editCropName.invalid && editCropName.touched">Crop name is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editCropType" class="form-label">Crop Type *</label>
+            <select id="editCropType" [(ngModel)]="selectedCrop.cropType" name="cropType" class="form-select" #editCropType="ngModel" required [class.is-invalid]="editCropType.invalid && editCropType.touched">
+              <option value="Grain">Grain</option>
+              <option value="Vegetable">Vegetable</option>
+              <option value="Fruit">Fruit</option>
+              <option value="Spice">Spice</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="editCropType.invalid && editCropType.touched">Crop type is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editQuantity" class="form-label">Quantity Available (kg) *</label>
+            <input id="editQuantity" [(ngModel)]="selectedCrop.quantityAvailable" name="quantityAvailable" type="number" min="1" class="form-control" #editQuantity="ngModel" required [class.is-invalid]="editQuantity.invalid && editQuantity.touched" />
+            <div class="invalid-feedback" *ngIf="editQuantity.invalid && editQuantity.touched">Valid quantity is required</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editPrice" class="form-label">Price per Kg (₹) *</label>
+            <input id="editPrice" [(ngModel)]="selectedCrop.pricePerKg" name="pricePerKg" type="number" min="1" step="0.01" class="form-control" #editPrice="ngModel" required [class.is-invalid]="editPrice.invalid && editPrice.touched" />
+            <div class="invalid-feedback" *ngIf="editPrice.invalid && editPrice.touched">Valid price is required</div>
+          </div>
+        </div>
+        <div class="text-end">
+          <button class="btn btn-success me-2" type="submit" [disabled]="editCropForm.invalid || saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle"></i> {{ saving ? 'Updating...' : 'Update Crop' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="selectedCrop = null" [disabled]="saving">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

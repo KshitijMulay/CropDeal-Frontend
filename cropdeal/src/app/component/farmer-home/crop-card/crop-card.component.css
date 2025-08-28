@@ -1,0 +1,42 @@
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-success:hover {
+  background-color: #157347;
+  border-color: #146c43;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+.bg-success {
+  background-color: #198754 !important;
+}
+
+.crop-card {
+  border-left: 4px solid #198754;
+}
+
+.badge {
+  font-size: 0.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
